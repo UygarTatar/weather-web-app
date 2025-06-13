@@ -1,9 +1,11 @@
 const mongoose = require('mongoose');
 
 const UserSchema = new mongoose.Schema({
-    name: {
+    username: {
         type: String,
-        required: true
+        required: true,
+        unique: true,
+        trim: true
     },
     email: {
         type: String,
@@ -13,10 +15,34 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    date: {
-        type: Date,
-        default: Date.now
+    name: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    userType: {
+        type: String,
+        enum: ['Admin', 'EndUser'],
+        default: 'EndUser'
+    },
+    defaultCityName: {
+        type: String,
+        default: ''
+    },
+    status: {
+        type: String,
+        enum: ['active', 'inactive', 'pending'],
+        default: 'active'
+    },
+    loginAttempts: {
+        type: Number,
+        default: 0
+    },
+    lockUntil: {
+        type: Date
     }
+}, {
+    timestamps: true    
 });
 
 const User = mongoose.model('User', UserSchema);

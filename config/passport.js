@@ -15,14 +15,32 @@ module.exports = function(passport) {
                     return done(null, false, { message: 'That email is not registered'});
                 }
 
+                // Lock control
+                if (user.lockUntil && user.lockUntil > Date.now()) {
+                    const remaining = Math.ceil((user.lockUntil - Date.now()) / 1000);
+                    return done(null, false, { message: `Account locked. Please try again after ${remaining} seconds.`  });
+                }
+
                 // Match password
                 bcrypt.compare(password, user.password, (err,isMatch) => {
                     if(err) throw err;
 
                     if(isMatch) {
-                        return done(null,user);
+                        user.loginAttempts = 0;
+                        user.lockUntil = undefined;
+                        user.save()
+                        .then(() => done(null, user))
+                        .catch(err => done(err));   
                     } else {
-                        return done(null,false, { message: 'Password incorrect'});
+                        user.loginAttempts += 1;
+
+                        if (user.loginAttempts >= 2) {
+                            user.lockUntil = Date.now() + 60 * 1000;
+                            user.loginAttempts = 0;
+                        }
+                        user.save()
+                        .then(() => done(null, false, { message: 'Password incorrect' }))
+                        .catch(err => done(err));
                     }
                 });
             })
