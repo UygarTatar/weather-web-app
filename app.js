@@ -7,6 +7,9 @@ const passport = require('passport');
 
 const app = express();
 
+// .env Config
+require('dotenv').config();
+
 // Passport Config
 require('./config/passport')(passport);
 
