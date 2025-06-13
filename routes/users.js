@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
+const { ensureAuthenticated } = require('../config/auth');
 
 // User Model
 const User = require('../models/User');
@@ -10,10 +11,10 @@ const User = require('../models/User');
 const UserLog = require('../models/UserLog');
 
 // Login Page
-router.get('/login', (req, res) => res.render('login'));
+router.get('/login', (req, res) => res.render('login', { title: 'Login' }));
 
 // Register Page
-router.get('/register', (req, res) => res.render('register'));
+router.get('/register', (req, res) => res.render('register', { title: 'Register' }));
 
 // Register Handle
 router.post('/register', (req,res) =>{
@@ -37,6 +38,7 @@ router.post('/register', (req,res) =>{
 
     if(errors.length > 0){
         res.render('register', {
+            title: 'Register',
             errors,
             name,
             username,
@@ -52,6 +54,7 @@ router.post('/register', (req,res) =>{
                 // User exists
                 errors.push({msg: 'Email is already registered'})
                 res.render('register', {
+                    title: 'Register',
                     errors,
                     name,
                     username,
@@ -106,6 +109,8 @@ router.post('/login', (req, res, next) => {
     req.logIn(user, (err) => {
       if (err) return next(err);
 
+      console.log('Logged in user:', user);
+
       const successLog = new UserLog({
         username: user.username,
         email: user.email,
@@ -114,10 +119,68 @@ router.post('/login', (req, res, next) => {
       });
       successLog.save().catch(console.error);
 
+      // Admin 
+      if (user.userType === 'Admin') {
+        return res.redirect('/admin/dashboard');
+      }
+
       return res.redirect('/dashboard');
     });
   })(req, res, next);
 });
+
+// Show Profile 
+router.get('/profile', ensureAuthenticated, (req, res) => {
+  res.render('profile', {
+    title: 'Profile',
+    user: req.user
+  });
+});
+
+// Update Profile
+router.post('/profile', ensureAuthenticated, async (req, res) => {
+  const { name, password, password2, defaultCityName } = req.body;
+  let errors = [];
+
+  if (!name || !defaultCityName) {
+    errors.push({ msg: 'Name and Default City Name cannot be empty' });
+  }
+  
+  // Check password change
+  if (password || password2) {
+    if (password !== password2) {
+      errors.push({ msg: 'Passwords do not match' });
+    }
+    if (password.length < 6) {
+      errors.push({ msg: 'Password should be at least 6 characters' });
+    }
+  }
+
+  if (errors.length > 0) {
+    return res.render('profile', { title: 'Profile', errors, user: req.user });
+  }
+
+  try {
+    const user = await User.findById(req.user.id);
+    user.name = name;
+    user.defaultCityName = defaultCityName;
+
+    if (password) {
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(password, salt);
+    }
+
+    await user.save();
+
+    req.flash('success_msg', 'Your profile has been successfully updated');
+    res.redirect('/users/profile');
+  } catch (err) {
+    console.error(err);
+    req.flash('error_msg', 'An error occurred');
+    res.redirect('/users/profile');
+  }
+});
+
 
 // Logout Handle
 router.get('/logout', (req, res, next) => {

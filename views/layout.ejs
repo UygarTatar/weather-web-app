@@ -9,7 +9,7 @@
       rel="stylesheet"
       href="https://bootswatch.com/4/journal/bootstrap.min.css"
     />
-    <title>Weather App</title>
+    <title><%= typeof title !== 'undefined' ? title : 'Weather App' %></title>
   </head>
   <body>
     <div class="container"><%- body %></div>

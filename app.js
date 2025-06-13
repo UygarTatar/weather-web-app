@@ -53,6 +53,12 @@ app.use((req,res, next) => {
 // Routes
 app.use('/', require('./routes/index'));
 app.use('/users', require('./routes/users'));
+app.use('/admin', require('./routes/admin'));
+
+// 404 middleware
+app.use((req, res, next) => {
+  res.status(404).render('404', { title: '404 Not Found' });
+});
 
 const PORT = process.env.PORT || 5000;
 
