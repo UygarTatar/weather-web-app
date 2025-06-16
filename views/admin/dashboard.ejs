@@ -1,2 +1,14 @@
-<h1 class="mt-4">Admin Dashboard</h1>
-<p class="lead mb-3">Welcome Admin</p>
+<div class="row mt-5">
+  <div class="col-md-6 m-auto">
+    <div class="card card-body">
+      <h1 class="text-center mb-3">📊 Admin Dashboard</h1>
+      <p class="lead text-center mb-4">Welcome <%= user.name %></p>
+
+      <div class="d-grid gap-2 mb-3">
+        <a href="/users/profile" class="btn btn-primary btn-block">👤 Edit Profile</a>
+        <a href="/admin/weather" class="btn btn-info btn-block">🌦️ Weather Management</a>
+        <a href="/users/logout" class="btn npbtn-secondary btn-block">🚪 Logout</a>
+      </div>
+    </div>
+  </div>
+</div>

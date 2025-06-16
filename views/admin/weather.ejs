@@ -1,0 +1,77 @@
+<%- include('../partials/header') %>
+
+<div class="container mt-4">
+    <h1 class="mb-3"><%= title %></h1>
+
+    <% if (success_msg) { %>
+        <div class="alert alert-success"><%= success_msg %></div>
+    <% } %>
+    <% if (error_msg) { %>
+        <div class="alert alert-danger"><%= error_msg %></div>
+    <% } %>
+
+    <!-- Add Button -->
+    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addWeatherModal">+ Add New</button>
+
+    <!-- Listing -->
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>City</th>
+                <th>Temperature (°C)</th>
+                <th>Status</th>
+                <th>Icon</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% weathers.forEach(weather => { %>
+                <tr>
+                    <td><%= weather.WeatherDate.toISOString().split('T')[0] %></td>
+                    <td><%= weather.CityName %></td>
+                    <td><%= weather.Temperature %></td>
+                    <td><%= weather.MainStatus %></td>
+                    <td>
+                        <img src="http://openweathermap.org/img/wn/<%= weather.Icon %>@2x.png" alt="<%= weather.MainStatus %>" width="50" height="50">
+                    </td>
+                    <td>
+                        <form action="/admin/weather/delete/<%= weather._id %>" method="POST" onsubmit="return confirm('Are you sure?')">
+                            <button class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</div>
+
+<!-- Add Record Modal -->
+<div class="modal fade" id="addWeatherModal" tabindex="-1" aria-labelledby="addWeatherModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form method="POST" action="/admin/weather/add">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addWeatherModalLabel">Add Weather Info</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+            <div class="mb-3">
+                <label>Date</label>
+                <input type="date" name="WeatherDate" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>City</label>
+                <input type="text" name="CityName" class="form-control" required>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button class="btn btn-success" type="submit">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>
