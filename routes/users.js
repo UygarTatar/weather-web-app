@@ -11,10 +11,10 @@ const User = require('../models/User');
 const UserLog = require('../models/UserLog');
 
 // Login Page
-router.get('/login', (req, res) => res.render('login', { title: 'Login' }));
+router.get('/login', (req, res) => res.render('login', { page: 'login', title: 'Login' }));
 
 // Register Page
-router.get('/register', (req, res) => res.render('register', { title: 'Register' }));
+router.get('/register', (req, res) => res.render('register', { page: 'register', title: 'Register' }));
 
 // Register Handle
 router.post('/register', (req,res) =>{
@@ -39,6 +39,7 @@ router.post('/register', (req,res) =>{
     if(errors.length > 0){
         res.render('register', {
             title: 'Register',
+            page: 'register',
             errors,
             name,
             username,
@@ -55,6 +56,7 @@ router.post('/register', (req,res) =>{
                 errors.push({msg: 'Email is already registered'})
                 res.render('register', {
                     title: 'Register',
+                    page: 'register',
                     errors,
                     name,
                     username,
@@ -133,6 +135,7 @@ router.post('/login', (req, res, next) => {
 router.get('/profile', ensureAuthenticated, (req, res) => {
   res.render('profile', {
     title: 'Profile',
+    page: 'profile',
     user: req.user
   });
 });
@@ -157,7 +160,7 @@ router.post('/profile', ensureAuthenticated, async (req, res) => {
   }
 
   if (errors.length > 0) {
-    return res.render('profile', { title: 'Profile', errors, user: req.user });
+    return res.render('profile', { page: 'profile', title: 'Profile', errors, user: req.user });
   }
 
   try {

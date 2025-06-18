@@ -28,6 +28,9 @@ app.set('view engine','ejs')
 // Bodyparser
 app.use(express.urlencoded({extended: false}));
 
+// Static files (CSS, JS, Images)
+app.use(express.static('public'));
+
 // Express session 
 app.use(session({
     secret: 'secret',
@@ -58,7 +61,7 @@ app.use('/admin/weather', require('./routes/weather'));
 
 // 404 middleware
 app.use((req, res, next) => {
-  res.status(404).render('404', { title: '404 Not Found' });
+  res.status(404).render('404', { title: '404 Not Found', page: 404 });
 });
 
 const PORT = process.env.PORT || 5000;

@@ -8,7 +8,7 @@ const { getWeatherData } = require('../services/weatherService');
 router.get('/', ensureAuthenticated, ensureAdmin, async (req, res) => {
     try {
         const weathers = await Weather.find().sort({ WeatherDate: -1, CityName: 1 });
-        res.render('admin/weather', { weathers, user: req.user, title: "Weather Management" });
+        res.render('admin/weather', { weathers, user: req.user, page: 'weather', title: "Weather Management" });
     } catch (err) {
         console.error(err);
         res.send("An error occured");
@@ -20,7 +20,7 @@ router.post('/add', ensureAuthenticated, ensureAdmin, async (req, res) => {
     const { WeatherDate, CityName } = req.body;
 
     try {
-        const weatherData = await getWeatherData(CityName);
+        const weatherData = await getWeatherData(CityName, WeatherDate);
         const newWeather = new Weather({
             WeatherDate,
             CityName,

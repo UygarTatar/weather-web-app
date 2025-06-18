@@ -4,11 +4,36 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+
     <link
       rel="stylesheet"
       href="https://bootswatch.com/4/journal/bootstrap.min.css"
     />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+      integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
+      crossorigin="anonymous"
+    />
+
+    <!-- Common style -->
+    <link rel="stylesheet" href="/css/style.css" />
+
+    <!-- Style for pages -->
+    <% if (typeof page !== 'undefined' && page === 'welcome') { %>
+      <link rel="stylesheet" href="/css/welcome.css" />
+    <% } else if (typeof page !== 'undefined' && page === 'login' || page === 'register') { %>
+      <link rel="stylesheet" href="/css/auth.css" />
+    <% } else if (typeof page !== 'undefined' && page === 'dashboard') { %>
+      <link rel="stylesheet" href="/css/dashboard.css" />
+    <% } else if (typeof page !== 'undefined' && page === 'profile') { %>
+      <link rel="stylesheet" href="/css/profile.css" />
+    <% } else if (typeof page !== 'undefined' && page === 'admin_dashboard') { %>
+      <link rel="stylesheet" href="/css/admin_dashboard.css" />
+    <% } else if (typeof page !== 'undefined' && page === 'weather') { %>
+      <link rel="stylesheet" href="/css/weather.css" />
+    <% } %>
+
     <title><%= typeof title !== 'undefined' ? title : 'Weather App' %></title>
   </head>
   <body>
