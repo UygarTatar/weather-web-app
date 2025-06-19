@@ -39,8 +39,11 @@ const getWeatherData = async (cityName, weatherDate) => {
         const temperature = matchedDay.temp.day;
         const mainStatus = matchedDay.weather[0].main;
         const icon = matchedDay.weather[0].icon;
+        const humidity = matchedDay.humidity;
+        const windSpeed = matchedDay.wind_speed;
+        const weatherId = matchedDay.weather[0].id;
 
-        return { temperature, mainStatus, icon };
+        return { temperature, mainStatus, icon, humidity, windSpeed, id: weatherId };
 
     } catch (err) {
         console.error('Error:', err.response ? err.response.data : err.message);

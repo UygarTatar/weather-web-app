@@ -58,6 +58,8 @@ app.use('/', require('./routes/index'));
 app.use('/users', require('./routes/users'));
 app.use('/admin', require('./routes/admin'));
 app.use('/admin/weather', require('./routes/weather'));
+app.use('/api', require('./routes/api'));
+
 
 // 404 middleware
 app.use((req, res, next) => {
