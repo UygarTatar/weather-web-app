@@ -41,9 +41,13 @@ const getWeatherData = async (cityName, weatherDate) => {
         const icon = matchedDay.weather[0].icon;
         const humidity = matchedDay.humidity;
         const windSpeed = matchedDay.wind_speed;
+        const uvIndex = weatherRes.data.current.uvi;
+        const precipitation = matchedDay.pop;
+        const sunrise = matchedDay.sunrise;
+        const sunset = matchedDay.sunset;
         const weatherId = matchedDay.weather[0].id;
 
-        return { temperature, mainStatus, icon, humidity, windSpeed, id: weatherId };
+        return { temperature, mainStatus, icon, humidity, windSpeed, id: weatherId, uvIndex, sunrise, sunset, precipitation };
 
     } catch (err) {
         console.error('Error:', err.response ? err.response.data : err.message);

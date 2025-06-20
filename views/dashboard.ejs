@@ -15,7 +15,13 @@
 
 </head>
 <body> 
-<main class="main-container">
+<div class="layout-wrapper">
+  <main class="main-container">
+  <div class="dashboard-topbar">
+    <a href="/users/profile" class="profile-btn" title="Profile">
+      <span class="material-symbols-outlined">account_circle</span>
+    </a>
+  </div>
 
   <header class="input-container">
     <input class="city-input" placeholder="Search City" type="text">
@@ -41,7 +47,7 @@
       </div>
     </div>
 
-    <div class="weather-conditions-container">
+    <div class="weather-conditions-grid">
       <div class="condition-item">
         <span class="material-symbols-outlined">water_drop</span>
         <div class="condition-info">
@@ -49,7 +55,6 @@
           <h5 class="humidity-value-txt">55%</h5>
         </div>
       </div>
-
       <div class="condition-item">
         <span class="material-symbols-outlined">air</span>
         <div class="condition-info">
@@ -57,17 +62,36 @@
           <h5 class="wind-value-txt">2 M/s</h5>
         </div>
       </div>
+      <div class="condition-item">
+        <span class="material-symbols-outlined">wb_sunny</span>
+        <div class="condition-info">
+          <h5 class="regular-txt">UV Index</h5>
+          <h5 class="uv-index-txt">--</h5>
+        </div>
+      </div>
+      <div class="condition-item">
+        <span class="material-symbols-outlined">cloud</span>
+        <div class="condition-info">
+          <h5 class="regular-txt">Precipitation</h5>
+          <h5 class="precipitation-txt">--</h5>
+        </div>
+      </div>
+      <div class="condition-item">
+        <span class="material-symbols-outlined">light_mode</span>
+        <div class="condition-info">
+          <h5 class="regular-txt">Sunrise</h5>
+          <h5 class="sunrise-txt">--</h5>
+        </div>
+      </div>
+      <div class="condition-item">
+        <span class="material-symbols-outlined">dark_mode</span>
+        <div class="condition-info">
+          <h5 class="regular-txt">Sunset</h5>
+          <h5 class="sunset-txt">--</h5>
+        </div>
+      </div>
     </div>
 
-    <div class="forecast-items-container">
-      <% for (let i = 0; i < 4; i++) { %>
-        <div class="forecast-item">
-          <h5 class="forecast-item-date regular-txt">05 Aug</h5>
-          <img src="/assets/weather/thunderstorm.svg" class="forecast-item-img">
-          <h5 class="forecast-item-temp">29 °C</h5>
-        </div>
-      <% } %>
-    </div>
   </section>
 
   <section class="search-city section-message">
@@ -85,9 +109,25 @@
       <h4 class="regular-txt">Find out the weather conditions of the city</h4>
     </div>
   </section>
+  </main>
 
-</main>
+  <div class="side-containers">
+    <div class="forecast-container">
+      <div class="forecast-items-container side-forecast">
+        
+      </div>
+    </div>
+
+    <div class="chart-container">
+      <canvas class="tempChart"></canvas>
+    </div>
+  </div>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const defaultCityName = "<%= user.defaultCityName ? user.defaultCityName : '' %>";
+</script>
 <script src="/js/script.js" defer></script>
 </body>
 </html>
