@@ -12,53 +12,66 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
   <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/weather.css" />
 
 </head>
 <body> 
-<div class="container mt-4">
+<div class="container mt-4 main-container">
     <h1 class="mb-3"><%= title %></h1>
 
-    <% if (success_msg) { %>
-        <div class="alert alert-success"><%= success_msg %></div>
-    <% } %>
-    <% if (error_msg) { %>
-        <div class="alert alert-danger"><%= error_msg %></div>
-    <% } %>
+    <%- include('../partials/messages') %>
 
     <!-- Add Button -->
     <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addWeatherModal">+ Add New</button>
 
+    <!-- Filter Form -->
+     <form method="GET" action="/admin/weather" class="row g-2 mb-3">
+        <div class="col-md-4">
+            <input type="text" name="city" class="form-control" placeholder="City"
+            value="<%= query?.city || '' %>">
+        </div>
+        <div class="col-md-4">
+            <input type="date" name="date" class="form-control"
+            value="<%= query?.city || '' %>">
+        </div>
+        <div class="col-md-4">
+            <button class="btn btn-success w-100" type="submit">Search</button>
+        </div>
+     </form>
+
     <!-- Listing -->
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>City</th>
-                <th>Temperature (°C)</th>
-                <th>Status</th>
-                <th>Icon</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% weathers.forEach(weather => { %>
+    <div class="table-wrapper">
+        <table class="table table-bordered">
+            <thead>
                 <tr>
-                    <td><%= weather.WeatherDate.toISOString().split('T')[0] %></td>
-                    <td><%= weather.CityName %></td>
-                    <td><%= weather.Temperature %></td>
-                    <td><%= weather.MainStatus %></td>
-                    <td>
-                        <img src="http://openweathermap.org/img/wn/<%= weather.Icon %>@2x.png" alt="<%= weather.MainStatus %>" width="50" height="50">
-                    </td>
-                    <td>
-                        <form action="/admin/weather/delete/<%= weather._id %>" method="POST" onsubmit="return confirm('Are you sure?')">
-                            <button class="btn btn-danger btn-sm">Delete</button>
-                        </form>
-                    </td>
+                    <th>Date</th>
+                    <th>City</th>
+                    <th>Temperature (°C)</th>
+                    <th>Status</th>
+                    <th>Icon</th>
+                    <th>Actions</th>
                 </tr>
-            <% }); %>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <% weathers.forEach(weather => { %>
+                    <tr>
+                        <td><%= weather.WeatherDate.toISOString().split('T')[0] %></td>
+                        <td><%= weather.CityName %></td>
+                        <td><%= weather.Temperature %></td>
+                        <td><%= weather.MainStatus %></td>
+                        <td>
+                            <img src="http://openweathermap.org/img/wn/<%= weather.Icon %>@2x.png" alt="<%= weather.MainStatus %>" width="50" height="50">
+                        </td>
+                        <td>
+                            <form action="/admin/weather/delete/<%= weather._id %>" method="POST" onsubmit="return confirm('Are you sure?')">
+                                <button class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <!-- Add Record Modal -->

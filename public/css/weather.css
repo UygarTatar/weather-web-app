@@ -1,0 +1,77 @@
+.main-container {
+    width: 100%;
+    max-width: 1400px;
+    height: auto;
+    background: linear-gradient(
+        to top, 
+        rgba(0, 0, 0, 0.15),
+        rgba(255, 255, 255, 0.15)
+    );
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 30px;
+    margin-top: 40px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.table-wrapper {
+  max-height: 500px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,0,0,0.15) rgba(0,0,0,0.1);
+}
+
+.table-wrapper::-webkit-scrollbar {
+  width: 8px;
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.1);
+  border-radius: 99px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.15);
+  border-radius: 99px;
+}
+
+
+.table {
+    border-radius: 8px;
+    overflow: hidden;
+    color: white;
+}
+
+.table th,
+.table td {
+    background-color: transparent !important;
+    color: white;
+    vertical-align: middle;
+}
+
+/* Alerts */
+.alert {
+    backdrop-filter: blur(4px);
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Butonlar */
+.btn-primary, .btn-success, .btn-danger, .btn-secondary {
+    border-radius: 8px;
+    font-weight: 500;
+    backdrop-filter: blur(2px);
+}
+
+/* Modal içeriği zaten güzel */
+.modal-content {
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.2),
+        rgba(255, 255, 255, 0.1)
+    );
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    color: white;
+}

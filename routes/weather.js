@@ -7,8 +7,22 @@ const { getWeatherData } = require('../services/weatherService');
 // Listings
 router.get('/', ensureAuthenticated, ensureAdmin, async (req, res) => {
     try {
-        const weathers = await Weather.find().sort({ WeatherDate: -1, CityName: 1 });
-        res.render('admin/weather', { weathers, user: req.user, page: 'weather', title: "Weather Management" });
+        const { city, date } = req.query;
+        const filter = {};
+        if (city) {
+            filter.CityName = { $regex: new RegExp(city, 'i') }; // case-insensitive
+        }
+        if (date) {
+            const start = new Date(date);
+            const end = new Date(date);
+            end.setDate(end.getDate() + 1);
+            filter.WeatherDate = { $gte: start, $lt: end };
+        }
+
+        const weathers = await Weather.find(filter).sort({ WeatherDate: -1, CityName: 1 });
+
+        res.render('admin/weather', { weathers, user: req.user, page: 'weather', title: "Weather Management", query: req.query });
+
     } catch (err) {
         console.error(err);
         res.send("An error occured");
