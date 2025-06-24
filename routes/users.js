@@ -184,6 +184,21 @@ router.post('/profile', ensureAuthenticated, async (req, res) => {
   }
 });
 
+// Profile to Dashboard
+router.get('/profile-redirect', ensureAuthenticated, (req, res) => {
+  if (req.user.userType === 'Admin') {
+    return res.redirect('/admin/dashboard');
+  }
+  return res.redirect('/dashboard');
+});
+
+// Weather to Dashboard
+router.get('/weather-redirect', ensureAuthenticated, (req, res) => {
+  if (req.user.userType === 'Admin') {
+    return res.redirect('/admin/dashboard');
+  }
+  return res.redirect('/dashboard');
+});
 
 // Logout Handle
 router.get('/logout', (req, res, next) => {
