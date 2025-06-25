@@ -67,11 +67,6 @@ async function getFetchData(endpoint, city, date = null) {
     return response.json();
 }
 
-function capitalizeFirstLetter(str) {
-    if (!str) return '';
-    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-}
-
 async function updateWeatherInfo(city) {
     const today = new Date().toISOString().split('T')[0];
     const weatherData = await getFetchData('weather', city, today);
@@ -81,9 +76,9 @@ async function updateWeatherInfo(city) {
         return;
     }
 
-    const { temperature, mainStatus, icon, humidity, windSpeed, id, uvIndex, sunrise, sunset, precipitation } = weatherData;
+    const { cityName, temperature, mainStatus, icon, humidity, windSpeed, id, uvIndex, sunrise, sunset, precipitation } = weatherData;
 
-    countryTxt.textContent = capitalizeFirstLetter(city)
+    countryTxt.textContent = cityName;
     tempTxt.textContent = Math.round(temperature) + ' °C';
     conditionTxt.textContent = mainStatus;
     humidityTxt.textContent = humidity + '%';

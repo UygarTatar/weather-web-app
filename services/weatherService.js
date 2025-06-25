@@ -11,7 +11,7 @@ const getCityCoordinates = async (cityName) => {
 
 const getWeatherData = async (cityName, weatherDate) => {
     try {
-        const { lat, lon } = await getCityCoordinates(cityName);
+        const { lat, lon , name } = await getCityCoordinates(cityName);
 
         const weatherRes = await axios.get('https://api.openweathermap.org/data/3.0/onecall', {
             params: {
@@ -47,7 +47,7 @@ const getWeatherData = async (cityName, weatherDate) => {
         const sunset = matchedDay.sunset;
         const weatherId = matchedDay.weather[0].id;
 
-        return { temperature, mainStatus, icon, humidity, windSpeed, id: weatherId, uvIndex, sunrise, sunset, precipitation };
+        return { cityName: name, temperature, mainStatus, icon, humidity, windSpeed, id: weatherId, uvIndex, sunrise, sunset, precipitation };
 
     } catch (err) {
         console.error('Error:', err.response ? err.response.data : err.message);

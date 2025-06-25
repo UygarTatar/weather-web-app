@@ -33,7 +33,7 @@ app.use(express.static('public'));
 
 // Express session 
 app.use(session({
-    secret: 'secret',
+    secret: process.env.SESSION_SECRET || 'secret',
     resave: true,
     saveUninitialized: true
 }));
@@ -54,11 +54,14 @@ app.use((req,res, next) => {
 })
 
 // Routes
+const { usersLimiter, apiLimiter, loginLimiter } = require('./middleware/rateLimiters');
+app.use('/users/login', loginLimiter); 
+app.use('/users', usersLimiter, require('./routes/users'));
+app.use('/api', apiLimiter, require('./routes/api'));  
+
 app.use('/', require('./routes/index'));
-app.use('/users', require('./routes/users'));
 app.use('/admin', require('./routes/admin'));
 app.use('/admin/weather', require('./routes/weather'));
-app.use('/api', require('./routes/api'));
 
 
 // 404 middleware
