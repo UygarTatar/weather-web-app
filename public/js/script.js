@@ -91,6 +91,33 @@ async function updateWeatherInfo(city) {
     currentDateTxt.textContent = getCurrentDate();
 
     weatherSummaryImg.src = `assets/weather/${getWeatherIcon(id)}`;
+
+    if (document.body.classList.contains('dashboard-page')) {
+        const backgroundMap = {
+            'Clear': 'clear.webp',
+            'Clouds': 'clouds.webp',
+            'Rain': 'rain.webp',
+            'Drizzle': 'drizzle.webp',
+            'Thunderstorm': 'thunderstorm.webp',
+            'Snow': 'snow.webp',
+            'Mist': 'fog.webp',
+            'Smoke': 'fog.webp',
+            'Haze': 'fog.webp',
+            'Fog': 'fog.webp',
+            'Dust': 'fog.webp',
+            'Sand': 'fog.webp',
+            'Ash': 'fog.webp',
+            'Squall': 'fog.webp',
+            'Tornado': 'fog.webp',
+        }
+        const backgroundImage = backgroundMap[mainStatus] || 'bg.webp';
+
+        const img = new Image();
+        img.src = `/assets/backgrounds/${backgroundImage}`;
+        img.onload = () => {
+            document.body.style.backgroundImage = `url('${img.src}')`;
+        };
+    }
     
     await updateForecastsInfo(city);
     showDisplaySection(weatherInfoSection)  ; 

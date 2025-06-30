@@ -9,6 +9,11 @@
   top: 0;
   left: 0;
 }
+body.dashboard-page {
+    background-size: cover;
+    background-position: center;
+    transition: background-image 0.5s ease-in-out;
+}
 .main-container {
     width: 40%;;    
     height: 100%;
