@@ -1,11 +1,107 @@
-.card-body {
-    padding: 20px;
-    border-radius: 12px;
-    border: none;
-    margin-top: -80px;
+.layout-wrapper {
+    display: flex;
+    gap: 30px;
+    padding: 80px;
+    width: 100vw;
+    height: 100dvh;
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.main-container {
+    position: relative;
+    width: 100%;;    
+    height: 100%;
+    z-index: 1;
     background: linear-gradient(
-        to top, 
-        rgba(0,0,0,0.15),
-        rgba(255,255,255,0.15) 
-    );  
+        to top, rgb(0,0,0,0.15),
+        rgb(255,255,255,0.15));
+    border-radius: 12px;
+    padding: 30px;
+}
+
+.btn-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 1000px; 
+    margin: 0 auto;
+}
+
+.btn-grid-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    aspect-ratio: 16 / 9;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 12px;
+    padding: 0;
+    max-height: 200px;
+    background-color: rgba(0,0,0,0.2);
+    color: white;
+    transition: background 0.3s ease;
+    text-align: center;
+}
+
+.btn-grid-item:hover {
+    background-color: rgba(255,255,255,0.2);
+    border-color: rgba(255,255,255,0.4);
+    box-shadow: 0 0 8px rgba(255,255,255,0.2);
+}
+
+.dashboard-topbar {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    z-index: 10;
+}
+
+.profile-btn {
+    text-decoration: none;
+    color: white;
+    background: rgba(0,0,0,0.2);
+    padding: 8px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s background;
+    outline: none;
+}
+
+.profile-btn:hover {
+    background: rgba(255,255,255,0.2);
+    outline: none;
+    text-decoration: none;
+}
+
+.logout-btn {
+    position: fixed;
+    top: 20px;
+    left: 30px;     
+    z-index: 1000;
+    text-decoration: none;
+    color: white;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 8px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s background;
+    width: 42px;    
+    height: 42px;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+
+.logout-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    text-decoration: none;
+    outline: none;
 }

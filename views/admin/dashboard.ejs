@@ -1,14 +1,49 @@
-<div class="row mt-5">
-  <div class="col-md-6 m-auto">
-    <div class="card card-body">
-      <h1 class="text-center mb-3">📊 Admin Dashboard</h1>
-      <p class="lead text-center mb-4">Welcome <%= user.name %></p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title><%= title %></title>
 
-      <div class="d-grid gap-2 mb-3">
-        <a href="/users/profile" class="btn btn-primary btn-block">👤 Edit Profile</a>
-        <a href="/admin/weather" class="btn btn-info btn-block">🌦️ Weather Management</a>
-        <a href="/users/logout" class="btn npbtn-secondary btn-block">🚪 Logout</a>
-      </div>
-    </div>
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Google Fonts: Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+
+  <!-- Material Icons -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/admin_dashboard.css" />
+</head>
+<body class="dashboard-page">
+
+  <a href="/users/logout" class="logout-btn" title="Logout">
+    <span class="material-symbols-outlined">logout</span>
+  </a>
+
+  <div class="dashboard-topbar">
+    <a href="/users/profile" class="profile-btn" title="Profile">
+      <span class="material-symbols-outlined">account_circle</span>
+    </a>
   </div>
-</div>
+
+  <div class="layout-wrapper">
+    <main class="main-container">
+      <div class="dashboard-content">
+        <h1 class="text-center mb-3"> Admin Dashboard</h1>
+        <p class="lead text-center mb-4">Welcome <%= user.name %></p>
+
+        <div class="btn-grid">
+          <a href="/admin/weather" class="btn btn-grid-item">🌦️ Weather Management</a>
+          <a href="/admin/users" class="btn btn-grid-item">👥 User Management</a>
+          <a href="/admin/reports" class="btn btn-grid-item">📊 Reports</a>
+          <a href="/admin/settings" class="btn btn-grid-item">⚙️ Settings</a>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

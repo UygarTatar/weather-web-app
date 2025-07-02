@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { getWeeklyWeather, getWeatherData } = require('../services/weatherService');
 
-// single day weather
+// Single day weather
 router.get('/weather', async (req, res) => {
     const { city, date } = req.query;
     if (!city || !date) return res.status(400).json({ error: 'City and date required' });

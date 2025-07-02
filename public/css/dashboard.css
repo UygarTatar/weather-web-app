@@ -264,7 +264,7 @@ body.dashboard-page {
 .logout-btn {
     position: fixed;
     top: 20px;
-    left: 30px;      /* Profil butonunun yanına hizala */
+    left: 30px;     
     z-index: 1000;
     text-decoration: none;
     color: white;
@@ -275,7 +275,7 @@ body.dashboard-page {
     justify-content: center;
     align-items: center;
     transition: 0.3s background;
-    width: 42px;     /* Profil butonu ile aynı boy */
+    width: 42px;    
     height: 42px;
     outline: none;
     border: none;

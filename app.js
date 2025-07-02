@@ -62,6 +62,7 @@ app.use('/api', apiLimiter, require('./routes/api'));
 app.use('/', require('./routes/index'));
 app.use('/admin', require('./routes/admin'));
 app.use('/admin/weather', require('./routes/weather'));
+app.use('/admin/users', require('./routes/adminUsers'));
 
 
 // 404 middleware

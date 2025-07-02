@@ -84,7 +84,7 @@ async function updateWeatherInfo(city) {
     humidityTxt.textContent = humidity + '%';
     windValueTxt.textContent = windSpeed + ' M/s';
     uvIndexTxt.textContent = uvIndex;
-    precipitationTxt.textContent = precipitation*100 + '%';
+    precipitationTxt.textContent = Math.round(precipitation * 100) + '%';
     sunriseTxt.textContent = formatTime(sunrise);
     sunsetTxt.textContent = formatTime(sunset);
 

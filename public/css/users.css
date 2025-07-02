@@ -72,6 +72,11 @@
     color: white;
 }
 
+select.form-select {
+    color: #111 !important;
+    background: #fff !important;
+}
+
 .weather-home-btn {
     position: fixed;
     top: 20px;
