@@ -1,12 +1,45 @@
-<div class="row mt-5">
-  <div class="col-md-6 m-auto">
-    <div class="card card-body text-center">
-      <h1><img src="/assets/logo.png" alt="Logo" style="width: 300px; height: auto;"></h1>
-      <p>Create an account or login</p>
-      <a href="/users/register" class="btn btn-primary btn-block mb-2"
-        >Register</a
-      >
-      <a href="/users/login" class="btn btn-secondary btn-block">Login</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Welcome</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/welcome.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="custom-navbar d-flex justify-content-end align-items-center">
+    <ul class="nav align-items-center">
+      <li class="nav-item">
+        <a href="/users/login" class="login-btn">Login</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="/">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/about">About</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/contact">Contact</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="welcome-section">
+    <div class="welcome-content">
+      <div class="welcome-title">WELCOME</div>
+      <span class="welcome-highlight">To Weatherio</span>
+      <div class="welcome-desc">
+        Stay ahead of the weather. Track real-time forecasts for your favorite cities. Create your free account and enjoy a modern, easy-to-use experience with Weatherio.
+      </div>
+      <a href="/users/register" class="welcome-btn">EXPLORE NOW</a>
+    </div>
+    <div class="welcome-illustration">
+      <img src="/assets/logo.png" alt="Welcome Illustration" style="max-width: 420px; width: 100%;">
     </div>
   </div>
-</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
