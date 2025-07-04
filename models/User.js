@@ -40,6 +40,12 @@ const UserSchema = new mongoose.Schema({
     },
     lockUntil: {
         type: Date
+    },
+    emailVerificationToken: {
+        type: String,
+    },
+    emailVerificationExpires: {
+        type: Date
     }
 }, {
     timestamps: true    

@@ -14,6 +14,11 @@ module.exports = function(passport) {
                 if(!user) {
                     return done(null, false, { message: 'That email is not registered'});
                 }
+                
+                // Check if user is active
+                if (user.status !== 'active') {
+                    return done(null, false, { message: 'Account not active. Please verify your email.' });
+                }
 
                 // Lock control
                 if (user.lockUntil && user.lockUntil > Date.now()) {

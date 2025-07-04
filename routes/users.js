@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const { ensureAuthenticated } = require('../config/auth');
+const emailVerificationService = require('../services/emailVerificationService');
 
 // User Model
 const User = require('../models/User');
@@ -72,23 +73,44 @@ router.post('/register', (req,res) =>{
                 });
 
                 // Hash Password
-                bcrypt.genSalt(10, (err,salt) =>
-                     bcrypt.hash(newUser.password, salt, (err,hash) => {
-                        if(err) throw err;
-                        // Set password to hashed
-                        newUser.password = hash;
-                        // Save user
-                        newUser.save()
-                        .then(user => {
-                            req.flash('success_msg', 'You are now registered and can log in');
-                            res.redirect('/users/login');
-                        })
-                        .catch(err => console.log(err));
-                }))
+                bcrypt.genSalt(10, (err, salt) =>
+                  bcrypt.hash(newUser.password, salt, async (err, hash) => {
+                    if (err) throw err;
+                    // Set password to hashed
+                    newUser.password = hash;
+                    // Save user
+                    try {
+                      const user = await newUser.save();
+                      await emailVerificationService.generateAndSendVerification(user, req);
+                      req.flash('success_msg', 'Registration successful! Please check your email to verify your account.');
+                      res.redirect('/users/login');
+                    } catch (err) {
+                      console.log(err);
+                      req.flash('error_msg', 'Registration failed. Please try again.');
+                      res.redirect('/users/register');
+                    }
+                  })
+                )
             }
         });
     }
 
+});
+
+// Verify Email
+router.get('/verify-email', async (req, res) => {
+    const { token } = req.query;
+    if (!token) {
+        req.flash('error_msg', 'Invalid or missing token.');
+        return res.redirect('/users/login');
+    }
+    const user = await emailVerificationService.verifyUserByToken(token);
+    if (!user) {
+        req.flash('error_msg', 'Verification link is invalid or has expired.');
+        return res.redirect('/users/login');
+    }
+    req.flash('success_msg', 'Your email has been verified. You can now log in.');
+    res.redirect('/users/login');
 });
 
 // Login Handle
