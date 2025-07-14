@@ -3,7 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
 
-const { ensureAuthenticated } = require('../middleware/auth');
+const { ensureAuthenticated, forwardAuthenticated } = require('../middleware/auth');
 const emailVerificationService = require('../services/emailVerificationService');
 const tokenService = require('../services/tokenService');
 
@@ -14,7 +14,7 @@ const User = require('../models/User');
 const UserLog = require('../models/UserLog');
 
 // Login Page
-router.get('/login', (req, res) => res.render('login', { page: 'login', title: 'Login' }));
+router.get('/login', forwardAuthenticated, (req, res) => res.render('login', { page: 'login', title: 'Login' }));
 
 // Register Page
 router.get('/register', (req, res) => res.render('register', { page: 'register', title: 'Register' }));
@@ -122,7 +122,7 @@ router.post('/login', (req, res, next) => {
 
     if (!user) {
       const failedLog = new UserLog({
-        email: req.body.email,
+        email: req.body.email || "unknown",
         ipAddress: req.ip,
         log: `Login failed: ${info.message}`
       });
@@ -273,7 +273,12 @@ router.get('/logout', async (req, res, next) => {
 
     if(refreshToken) {
       // Clear cookie
-      res.clearCookie('refreshToken');
+      res.clearCookie('refreshToken', {
+        httpOnly: true,
+        secure: false, // Use secure cookies in production
+        sameSite: 'Strict',
+        path: '/' // Adjust as needed
+      });
 
       // If the user is logged in, remove the refresh token from the database
       if(req.user) {

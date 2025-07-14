@@ -38,8 +38,23 @@ function ensureAdmin(req, res, next) {
     res.redirect('/users/login');
 }
 
+function forwardAuthenticated(req, res, next) {
+    if (req.isAuthenticated && req.isAuthenticated()) {
+
+        // Check if user is admin to redirect accordingly
+        if(req.user && req.user.userType === 'Admin') {
+            return res.redirect('/admin/dashboard');
+        }
+
+        // Redirect to dashboard if user is not admin
+        return res.redirect('/dashboard');
+    }
+    next();
+}
+
 module.exports = {
     verifyAccessToken,
     ensureAuthenticated,
-    ensureAdmin
+    ensureAdmin,
+    forwardAuthenticated
 }

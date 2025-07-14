@@ -9,7 +9,7 @@ const cookieParser = require('cookie-parser');
 const app = express();
 
 // .env Config
-require('dotenv').config();
+require('dotenv-flow').config();
 
 // Passport Config
 require('./config/passport')(passport);
@@ -28,6 +28,7 @@ app.set('view engine','ejs')
 
 // Bodyparser
 app.use(express.urlencoded({extended: false}));
+app.use(express.json()); 
 
 // Static files (CSS, JS, Images)
 app.use(express.static('public'));
@@ -42,6 +43,7 @@ app.use(session({
     saveUninitialized: false,
     rolling: true,
     cookie: {
+        secure: false, // For testing, set to true in production
         maxAge: 24 * 60 * 60 * 1000 // 1 day
     }
 }));
@@ -80,6 +82,4 @@ app.use((req, res, next) => {
   res.status(404).render('404', { title: '404 Not Found', page: 404 });
 });
 
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT,console.log(`Server started on port ${PORT}`));
+module.exports = app;
