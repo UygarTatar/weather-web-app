@@ -34,6 +34,10 @@ const UserSchema = new mongoose.Schema({
         enum: ['active', 'inactive', 'pending'],
         default: 'active'
     },
+    refreshTokens: {
+        type: [String],
+        default: []
+    },
     loginAttempts: {
         type: Number,
         default: 0

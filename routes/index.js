@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
-const { ensureAuthenticated } = require('../config/auth');
+const { ensureAuthenticated } = require('../middleware/auth');
 
 // Welcome page
 router.get('/', (req, res) => res.render('welcome', { page: 'welcome'}));

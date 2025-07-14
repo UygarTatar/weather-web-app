@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const flash = require('connect-flash');
 const session = require('express-session');
 const passport = require('passport');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 
@@ -31,11 +32,18 @@ app.use(express.urlencoded({extended: false}));
 // Static files (CSS, JS, Images)
 app.use(express.static('public'));
 
+// Cookie Parser
+app.use(cookieParser());
+
 // Express session 
 app.use(session({
     secret: process.env.SESSION_SECRET || 'secret',
-    resave: true,
-    saveUninitialized: true
+    resave: false,
+    saveUninitialized: false,
+    rolling: true,
+    cookie: {
+        maxAge: 24 * 60 * 60 * 1000 // 1 day
+    }
 }));
 
 // Passport middleware
@@ -64,6 +72,8 @@ app.use('/admin', require('./routes/admin'));
 app.use('/admin/weather', require('./routes/weather'));
 app.use('/admin/users', require('./routes/adminUsers'));
 
+// Test JWT route
+app.use('/test', require('./routes/testJwt'));
 
 // 404 middleware
 app.use((req, res, next) => {

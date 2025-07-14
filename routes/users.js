@@ -2,8 +2,10 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
-const { ensureAuthenticated } = require('../config/auth');
+
+const { ensureAuthenticated } = require('../middleware/auth');
 const emailVerificationService = require('../services/emailVerificationService');
+const tokenService = require('../services/tokenService');
 
 // User Model
 const User = require('../models/User');
@@ -115,7 +117,7 @@ router.get('/verify-email', async (req, res) => {
 
 // Login Handle
 router.post('/login', (req, res, next) => {
-  passport.authenticate('local', (err, user, info) => {
+  passport.authenticate('local', async (err, user, info) => {
     if (err) return next(err);
 
     if (!user) {
@@ -124,14 +126,20 @@ router.post('/login', (req, res, next) => {
         ipAddress: req.ip,
         log: `Login failed: ${info.message}`
       });
-      failedLog.save().catch(console.error);
+      await failedLog.save().catch(console.error);
 
       req.flash('error_msg', info.message);
       return res.redirect('/users/login');
     }
 
-    req.logIn(user, (err) => {
+    req.logIn(user, async (err) => {
       if (err) return next(err);
+
+      const accessToken = tokenService.generateAccessToken(user);
+      const refreshToken = tokenService.generateRefreshToken(user);
+
+      // Save Refresh Token to DB
+      await tokenService.saveRefreshToken(user._id, refreshToken);
 
       console.log('Logged in user:', user);
 
@@ -141,7 +149,18 @@ router.post('/login', (req, res, next) => {
         ipAddress: req.ip,
         log: 'Login successful'
       });
-      successLog.save().catch(console.error);
+      await successLog.save().catch(console.error);
+
+      // Send access token as a HTTPOnly cookie
+      res.cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
+        sameSite: 'Strict', // Adjust as needed
+        maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+      });
+
+      // Optionally, you can send the access token in the response body if needed
+      // return res.json({ accessToken });
 
       // Admin 
       if (user.userType === 'Admin') {
@@ -222,13 +241,58 @@ router.get('/weather-redirect', ensureAuthenticated, (req, res) => {
   return res.redirect('/dashboard');
 });
 
+// Refresh Token Handle
+router.post('/refresh-token', async (req, res) => {
+  const refreshToken = req.cookies.refreshToken;
+
+  if (!refreshToken) {
+    return res.status(401).json({ message: 'Refresh token missing' });
+  }
+
+  try {
+    const payload = tokenService.verifyRefreshToken(refreshToken);
+    const user = await User.findById(payload.id);
+
+    if (!user || !user.refreshTokens.includes(refreshToken)){
+      return res.status(403).json({ message: 'Invalid refresh token' });
+    }
+
+    // Generate new access token
+    const newAccessToken = tokenService.generateAccessToken(user);
+
+    return res.json({ accessToken: newAccessToken });
+  } catch (err) {
+    console.error('Refresh token error:', err.message);
+    return res.status(403).json({ message: 'Invalid or expired refresh token' });
+}});
+
 // Logout Handle
-router.get('/logout', (req, res, next) => {
-    req.logout((err) => {
-        if (err) return next(err);
-        req.flash('success_msg', 'You are logged out');
-        res.redirect('/users/login');
+router.get('/logout', async (req, res, next) => {
+  try {
+    const refreshToken = req.cookies.refreshToken;
+
+    if(refreshToken) {
+      // Clear cookie
+      res.clearCookie('refreshToken');
+
+      // If the user is logged in, remove the refresh token from the database
+      if(req.user) {
+        await User.findByIdAndUpdate(req.user._id, {
+          $pull: { refreshTokens: refreshToken }
+      });
+    }
+  }
+
+  req.logout((err) => {
+      if (err) return next(err);
+      req.flash('success_msg', 'You are logged out');
+      res.redirect('/users/login');
     });
+  } catch (err) {
+    console.error('Logout error:', err);
+    req.flash('error_msg', 'An error occurred while logging out');
+    res.redirect('/users/login');
+  }
 });
 
 module.exports = router;

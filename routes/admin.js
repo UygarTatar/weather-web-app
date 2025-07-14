@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { ensureAuthenticated, ensureAdmin } = require('../config/auth');
+const { ensureAuthenticated, ensureAdmin } = require('../middleware/auth');
 
 // Admin Panel
 router.get('/dashboard', ensureAuthenticated, ensureAdmin, (req, res) => {

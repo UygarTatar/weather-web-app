@@ -15,14 +15,14 @@ const transporter = nodemailer.createTransport({
 async function generateAndSendVerification(user, req) {
     const token = crypto.randomBytes(32).toString('hex');
     user.emailVerificationToken = token;
-    user.emailVerificationExpires = Date.now() + 3600000; // 1 saat
+    user.emailVerificationExpires = Date.now() + 3600000; // 1 hour
     user.status = 'pending';
 
     await user.save();
 
-    const verificationUrl = `${process.env.BASE_URL}/users/verify-email?token=${token}`;
+    const verificationUrl = `${process.env.BASE_URL}/users/verify-email?token=${token}`;        
 
-    const mailOptions = {
+    const mailOptions = {   
         to: user.email,
         from: EMAIL_FROM,
         subject: 'Weatherio Email Verification',

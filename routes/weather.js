@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Weather = require('../models/WeatherInfo');
-const { ensureAuthenticated, ensureAdmin } = require('../config/auth');
+const { ensureAuthenticated, ensureAdmin } = require('../middleware/auth');
 const { getWeatherData } = require('../services/weatherService');
 
 // Listings

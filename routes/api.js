@@ -13,7 +13,7 @@ router.get('/weather', async (req, res) => {
     res.json(data);
 });
 
-// weekly weather
+// Weekly weather
 router.get('/forecast', async (req, res) => {
     const { city } = req.query;
     if (!city) return res.status(400).json({ error: 'City required' });

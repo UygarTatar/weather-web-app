@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { ensureAuthenticated, ensureAdmin } = require('../config/auth');
+const { ensureAuthenticated, ensureAdmin } = require('../middleware/auth');
 const User = require('../models/User');
 
 // List Users with Filters
