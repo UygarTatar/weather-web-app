@@ -36,16 +36,18 @@ const getWeatherData = async (cityName, weatherDate) => {
 
         if (!matchedDay) throw new Error('Weather data for given date not found');
 
-        const temperature = matchedDay.temp.day;
-        const mainStatus = matchedDay.weather[0].main;
-        const icon = matchedDay.weather[0].icon;
-        const humidity = matchedDay.humidity;
-        const windSpeed = matchedDay.wind_speed;
-        const uvIndex = weatherRes.data.current.uvi;
+        const current = weatherRes.data.current;
+
+        const temperature = current.temp;
+        const mainStatus = current.weather[0].main;
+        const icon = current.weather[0].icon;
+        const humidity = current.humidity;
+        const windSpeed = current.wind_speed;
+        const uvIndex = current.uvi;
         const precipitation = matchedDay.pop;
         const sunrise = matchedDay.sunrise;
         const sunset = matchedDay.sunset;
-        const weatherId = matchedDay.weather[0].id;
+        const weatherId = current.weather[0].id;
 
         return { cityName: name, temperature, mainStatus, icon, humidity, windSpeed, id: weatherId, uvIndex, sunrise, sunset, precipitation };
 
