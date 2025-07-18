@@ -32,6 +32,11 @@ app.use(express.json());
 
 // Static files (CSS, JS, Images)
 app.use(express.static('public'));
+const path = require('path');
+
+app.use('/assets', express.static(path.join(__dirname, 'public/assets'), {
+  maxAge: '30d' // Cache for 30 days
+}));
 
 // Cookie Parser
 app.use(cookieParser());

@@ -4,7 +4,7 @@ const axios = require('axios');
 const { ensureAuthenticated } = require('../middleware/auth');
 
 // Welcome page
-router.get('/', (req, res) => res.render('welcome', { page: 'welcome'}));
+router.get('/', (req, res) => res.render('welcome', { page: 'welcome', title: 'Welcome' }));
 
 // About page
 router.get('/about', (req, res) => res.render('about', { page: 'about', title: 'About' }));
