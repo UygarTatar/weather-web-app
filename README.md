@@ -62,15 +62,20 @@ App will run on: http://localhost:5000
 
 📁 Project Structure
 
+```
 weather_web_app/
-├── routes/             # Express route files
-├── views/              # EJS view templates
+├── config/             # Passport configuration
+├── middleware/         # 
 ├── models/             # Mongoose models
 ├── public/             # Static files (CSS, JS)
-├── config/             # Passport configuration
+├── routes/             # Express route files
+├── services/           # API calls
+├── tests/              # Tests
+├── views/              # EJS view templates
 ├── app.js              # Main application file
 ├── .env                # Environment variables (DO NOT push this)
 └── README.md
+```
 
 🔐 Security Notes
 Do not commit .env files — sensitive keys must be kept private.
