@@ -84,7 +84,7 @@ app.use('/test', require('./routes/testJwt'));
 
 // 404 middleware
 app.use((req, res, next) => {
-  res.status(404).render('404', { title: '404 Not Found', page: 404 });
+  res.status(404).render('404', { title: '404 Not Found', page: 404, user: req.user });
 });
 
 module.exports = app;

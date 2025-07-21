@@ -141,7 +141,13 @@ router.post('/login', (req, res, next) => {
       // Save Refresh Token to DB
       await tokenService.saveRefreshToken(user._id, refreshToken);
 
-      console.log('Logged in user:', user);
+      console.log('Logged in user:', {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        userType: user.userType,
+        defaultCityName: user.defaultCityName
+      });
 
       const successLog = new UserLog({
         username: user.username,

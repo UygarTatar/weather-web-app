@@ -6,6 +6,12 @@
 <body>
   <h1>404 Not Found</h1>
   <p>Sorry, the page you requested could not be found.</p>
-  <a href="/">Back to Home</a>
+  <% if (user && user.userType === 'Admin') { %>
+    <a href="/admin/dashboard">Back to Dashboard</a>
+  <% } else if (user) { %>
+    <a href="/dashboard">Back to Dashboard</a>
+  <% } else { %>
+    <a href="/">Back to Home</a>
+  <% } %>
 </body>
 </html>
