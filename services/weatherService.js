@@ -86,6 +86,18 @@ const getWeeklyWeather = async (cityName) => {
         console.error('Error:', err.response ? err.response.data : err.message);
         return null;
     }
-}
+};
 
-module.exports = { getWeatherData, getWeeklyWeather };
+const getCitySuggestions = async (cityQuery) => {
+    const geoRes = await axios.get('https://api.openweathermap.org/geo/1.0/direct', {
+        params: { q: cityQuery, limit: 3, appid: API_KEY }
+    });
+    return geoRes.data.map(entry => ({
+        name: entry.name,
+        country: entry.country,
+        lat: entry.lat,
+        lon: entry.lon
+    }));
+};
+
+module.exports = { getWeatherData, getWeeklyWeather, getCitySuggestions };

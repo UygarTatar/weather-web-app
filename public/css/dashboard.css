@@ -287,3 +287,29 @@ body.dashboard-page {
     text-decoration: none;
     outline: none;
 }
+
+.suggestions-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    max-height: 150px;
+    overflow-y: auto;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    color: white;
+}
+
+.suggestions-list li {
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.suggestions-list li:hover {
+    background: rgba(255, 255, 255, 0.1);
+}

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { getWeeklyWeather, getWeatherData } = require('../services/weatherService');
+const { getWeeklyWeather, getWeatherData, getCitySuggestions } = require('../services/weatherService');
 
 // Single day weather
 router.get('/weather', async (req, res) => {
@@ -22,6 +22,22 @@ router.get('/forecast', async (req, res) => {
     if (!data) return res.status(500).json({ error: 'Forecast fetch failed' });
 
     res.json({ list: data });
+});
+
+// City suggestions
+router.get('/city-suggestions', async (req, res) => {
+    const { query } = req.query;
+    if (!query) return res.status(400).json({ error: 'Query required' });
+
+    try {
+        const suggestions = await getCitySuggestions(query);
+        if (!suggestions.length) return res.status(404).json({ error: 'No suggestions found' });
+
+        res.json(suggestions);
+    } catch (err) {
+        console.error('City suggestion error:', err.message);
+        res.status(500).json({ error: 'Internal server error' });
+    }
 });
 
 module.exports = router;

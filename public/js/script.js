@@ -19,7 +19,9 @@ const currentDateTxt = document.querySelector('.current-date-txt');
 
 const forecastItemsContainer = document.querySelector('.forecast-items-container.side-forecast');
 const tempChartCanvas = document.querySelector('.tempChart');
+const suggestionsList = document.querySelector('.suggestions-list');
 
+let debounceTimeout = null;
 let tempChartInstance = null;
 
 searchBtn.addEventListener('click', () => {
@@ -34,6 +36,48 @@ cityInput.addEventListener('keydown', (event) => {
         updateWeatherInfo(cityInput.value);
         cityInput.value = '';
         cityInput.blur();
+    }
+});
+
+cityInput.addEventListener('input', () => {
+    const query = cityInput.value.trim();
+
+    clearTimeout(debounceTimeout);
+
+    if (query.length < 2) {
+        suggestionsList.innerHTML = '';
+        return;
+    }
+
+    debounceTimeout = setTimeout(async () => {
+        try {
+            const res = await fetch(`/api/city-suggestions?query=${encodeURIComponent(query)}`);
+            if (!res.ok) throw new Error('Failed to fetch suggestions');
+            const data = await res.json();
+            
+            suggestionsList.innerHTML = '';
+
+            data.forEach(city => {
+                const li = document.createElement('li');
+                li.textContent = `${city.name}, ${city.country}`;
+                li.addEventListener('click', () => {
+                    updateWeatherInfo(city.name);
+                    suggestionsList.innerHTML = '';
+                    cityInput.value = '';
+                    cityInput.blur();
+                });
+                suggestionsList.appendChild(li);
+            });
+        } catch (err) {
+            console.error('Suggestion fetch error:', err);
+            suggestionsList.innerHTML = '';
+        }
+    }, 300); // debounce 300ms
+});
+
+document.addEventListener('click', (e) => {
+    if (!cityInput.contains(e.target) && !suggestionsList.contains(e.target)) {
+        suggestionsList.innerHTML = '';
     }
 });
 
