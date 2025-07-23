@@ -1,0 +1,108 @@
+.report-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    width: 100%;
+    height: calc(100% - 60px);
+    margin-top: 20px;
+}
+
+.report-table-container, 
+.report-chart-container {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    padding: 20px;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.report-table-container {
+    overflow: hidden;
+}
+
+.report-chart-container {
+    position: relative;
+    height: 100%;
+}
+
+.table-wrapper {
+    overflow-y: auto;
+    height: 100%;
+    border-radius: 8px;
+}
+
+.report-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.report-table thead {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.report-table th {
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.report-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.report-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.report-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.weather-home-btn {
+    position: fixed;
+    top: 20px;
+    left: 30px;
+    z-index: 1000;
+}
+
+.home-icon-btn {
+    text-decoration: none;
+    color: white;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 8px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s background;
+    width: 42px;
+    height: 42px;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+
+.home-icon-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    text-decoration: none;
+    outline: none;
+}
+
+@media (max-width: 992px) {
+    .report-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .report-table-container, 
+    .report-chart-container {
+        height: auto;
+        min-height: 300px;
+    }
+}

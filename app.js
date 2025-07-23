@@ -76,8 +76,9 @@ app.use('/api', apiLimiter, require('./routes/api'));
 
 app.use('/', require('./routes/index'));
 app.use('/admin', require('./routes/admin'));
-app.use('/admin/weather', require('./routes/weather'));
+app.use('/admin/weather', require('./routes/adminWeather'));
 app.use('/admin/users', require('./routes/adminUsers'));
+app.use('/admin/reports', require('./routes/adminReports'));
 
 // Test JWT route
 app.use('/test', require('./routes/testJwt'));

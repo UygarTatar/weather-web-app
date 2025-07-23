@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title><%= title %></title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Google Fonts Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+
+  <!-- Material Symbols Icons -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/reports.css" />
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<div class="weather-home-btn">
+  <a href="/users/weather-redirect" class="home-icon-btn" title="Dashboard">
+    <span class="material-symbols-outlined">home</span>
+  </a>
+</div>
+
+<body class="dashboard-page">
+  <div class="layout-wrapper">
+    <main class="main-container">
+      <div class="dashboard-content">
+        <h1 class="text-center mb-4"><%= title %></h1>
+        
+        <div class="report-grid">
+          <div class="report-table-container">
+            <div class="table-wrapper">
+              <table class="report-table">
+                <thead>
+                  <tr>
+                    <th>City</th>
+                    <th>Request Number</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% stats.forEach(stat => { %>
+                    <tr>
+                      <td><%= stat._id || 'Bilinmeyen' %></td>
+                      <td><%= stat.count %></td>
+                    </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="report-chart-container">
+            <canvas id="cityStatsChart" 
+                    data-labels="<%- JSON.stringify(labels).replace(/"/g, '&quot;') %>"
+                    data-counts="<%- JSON.stringify(dataCounts) %>">
+            </canvas>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Bootstrap Bundle JS (Popper.js) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const ctx = document.getElementById('cityStatsChart').getContext('2d');
+      const canvas = document.getElementById('cityStatsChart');
+
+      const labels = JSON.parse(canvas.dataset.labels);
+      const dataCounts = JSON.parse(canvas.dataset.counts);
+
+      const chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Request Number',
+            data: dataCounts,
+            backgroundColor: 'rgba(54, 162, 235, 0.7)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              precision: 0,
+              ticks: {
+                color: 'white'
+              },
+              grid: {
+                color: 'rgba(255, 255, 255, 0.1)'
+              }
+            },
+            x: {
+              ticks: {
+                color: 'white'
+              },
+              grid: {
+                color: 'rgba(255, 255, 255, 0.1)'
+              }
+            }
+          },
+          plugins: {
+            legend: {
+              display: true,
+              position: 'top',
+              labels: {
+                color: 'white',
+                font: {
+                  size: 14
+                }
+              }
+            }
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -22,6 +22,10 @@ const UserLogSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
+  city: {
+    type: String,
+    default: ''
+  },
   log: {
     type: String,
     default: ''

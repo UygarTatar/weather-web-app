@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { getWeeklyWeather, getWeatherData, getCitySuggestions } = require('../services/weatherService');
+const UserLog = require('../models/UserLog');
 
 // Single day weather
 router.get('/weather', async (req, res) => {
@@ -9,6 +10,18 @@ router.get('/weather', async (req, res) => {
 
     const data = await getWeatherData(city, date);
     if (!data) return res.status(500).json({ error: 'Weather fetch failed' });
+
+    try {
+        await UserLog.create({
+            username: req.user ? req.user.username : 'Anonymous',
+            email: req.user ? req.user.email : 'Anonymous',
+            city,
+            ipAddress: req.ip,
+            log: 'Weather data requested'
+        });
+    } catch (err) {
+        console.error('User log error:', err.message);
+    }
 
     res.json(data);
 });

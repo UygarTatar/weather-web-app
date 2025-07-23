@@ -34,6 +34,8 @@
       <link rel="stylesheet" href="/css/admin_dashboard.css" />
     <% } else if (typeof page !== 'undefined' && page === 'weather') { %>
       <link rel="stylesheet" href="/css/weather.css" />
+    <% } else if (typeof page !== 'undefined' && page === 'reports') { %>
+      <link rel="stylesheet" href="/css/reports.css" />
     <% } %>
 
     <title><%= typeof title !== 'undefined' ? title : 'Weather App' %></title>
